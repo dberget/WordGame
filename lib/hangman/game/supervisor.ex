@@ -1,4 +1,4 @@
-defmodule Hangman.GameSupervisor do
+defmodule Hangman.Supervisor do
   use DynamicSupervisor
 
   def start_link(_) do
