@@ -1,5 +1,5 @@
 defmodule Hangman do
-  alias Hangman.{GameServer, GameSupervisor}
+  alias Hangman.{GameServer, Supervisor}
 
   @moduledoc """
   Hangman keeps the contexts that define your domain
@@ -9,7 +9,7 @@ defmodule Hangman do
   if it comes from the database, an external API or others.
   """
   def create_game(user) do
-    {:ok, _pid} = DynamicSupervisor.start_child(GameSupervisor, {GameServer, user})
+    {:ok, _pid} = DynamicSupervisor.start_child(Supervisor, {GameServer, user})
 
     :ok
   end
@@ -17,11 +17,11 @@ defmodule Hangman do
   def set_word(word, user) do
     word_as_list = String.split(word, "", trim: true)
 
-    {:ok, _word} = Hangman.GameServer.new_word(word_as_list, user)
+    {:ok, _word} = GameServer.new_word(word_as_list, user)
   end
 
   def handle_guess(letter, user) do
-    {:ok, %{word: word, guesses: guess_list}} = Hangman.GameServer.get_state(user)
+    {:ok, %{word: word, guesses: guess_list}} = GameServer.get_state(user)
 
     with {:ok, "valid"} <- valid_guess?(letter, guess_list),
          true <- Enum.member?(word, letter),
@@ -34,7 +34,7 @@ defmodule Hangman do
         {:ok, "Congrats, word: #{word}"}
 
       false ->
-        Hangman.GameServer.wrong_guess(letter, user)
+        GameServer.wrong_guess(letter, user)
 
       {:error, error} ->
         error
@@ -44,7 +44,7 @@ defmodule Hangman do
   defp save_guess(letter, every_index, user) do
     Enum.each(
       every_index,
-      &Hangman.GameServer.correct_guess(%{value: letter, index: &1}, user)
+      &GameServer.correct_guess(%{value: letter, index: &1}, user)
     )
 
     :ok
@@ -73,8 +73,8 @@ defmodule Hangman do
   end
 
   defp check_complete(user) do
-    {:ok, %{word: word, correct_guesses: guesses}} = Hangman.GameServer.get_state(user)
+    {:ok, %{word: word, correct_guesses: guesses}} = GameServer.get_state(user)
 
-    if Enum.empty?(word -- guesses), do: Hangman.GameServer.complete(user), else: :incomplete
+    if Enum.empty?(word -- guesses), do: GameServer.complete(user), else: :incomplete
   end
 end
