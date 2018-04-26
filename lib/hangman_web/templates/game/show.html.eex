@@ -1,5 +1,6 @@
 <h2>Show Game</h2>
 
+<%= if @host do %>
 <ul>
 
   <li>
@@ -12,4 +13,15 @@
   </li>
 
 </ul>
+
+<%= else %>
+ <li>
+  <strong> Welcome to the Game <strong>
+ </li>
+  <li>
+   <strong>Host is:</strong>
+   <%= @game.host %>
+  </li>
+
+<% end %>
 
