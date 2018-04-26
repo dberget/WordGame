@@ -3,8 +3,6 @@ defmodule Hangman.GameServer do
 
   # client api
   def start_link(host) do
-    IO.inspect(host)
-
     GenServer.start_link(
       __MODULE__,
       %{host: host, word: [], guesses: [], correct_guesses: [], round: 1, complete: false},
