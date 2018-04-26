@@ -2,7 +2,7 @@ defmodule HangmanWeb.GameSocket do
   use Phoenix.Socket
 
   ## Channels
-  channel("room:*", HangmanWeb.GameChannel)
+  channel("game:*", HangmanWeb.GameChannel)
 
   ## Transports
   transport(:websocket, Phoenix.Transports.WebSocket)
@@ -19,7 +19,7 @@ defmodule HangmanWeb.GameSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
-  def connect(_params, socket) do
+  def connect(params, socket) do
     {:ok, socket}
   end
 

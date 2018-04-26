@@ -6,32 +6,36 @@ defmodule Hangman.GameServer do
     GenServer.start_link(
       __MODULE__,
       %{host: host, word: [], guesses: [], correct_guesses: [], round: 1, complete: false},
-      name: via_tuple(host.id)
+      name: via_tuple(host.slug)
     )
   end
 
   def new_word(word, host) do
-    GenServer.call(via_tuple(host.id), {:new_word, word})
+    GenServer.call(via_tuple(host), {:new_word, word})
   end
 
   def new_round(host) do
-    GenServer.call(via_tuple(host.id), {:new_round})
+    GenServer.call(via_tuple(host), {:new_round})
   end
 
   def correct_guess(letter, host) do
-    GenServer.call(via_tuple(host.id), {:correct_guess, letter})
+    GenServer.call(via_tuple(host), {:correct_guess, letter})
   end
 
   def wrong_guess(letter, host) do
-    GenServer.call(via_tuple(host.id), {:wrong_guess, letter})
+    GenServer.call(via_tuple(host), {:wrong_guess, letter})
   end
 
   def complete(host) do
-    GenServer.call(via_tuple(host.id), {:complete})
+    GenServer.call(via_tuple(host), {:complete})
   end
 
   def get_state(host) do
-    GenServer.call(via_tuple(host.id), {:get_state})
+    GenServer.call(via_tuple(host), {:get_state})
+  end
+
+  def game_running?(game) do
+    GenServer.whereis({:via, Registry, {:hangman_server, game.slug}})
   end
 
   defp via_tuple(host_id) do

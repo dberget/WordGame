@@ -10,6 +10,7 @@ defmodule HangmanWeb.GameController do
   def show(conn, %{"slug" => slug}) do
     game = Games.get_game!(slug)
     is_host? = get_session(conn, :host)
+    {:ok, _msg} = Hangman.running?(game)
 
     render(conn, "show.html", game: game, host: is_host?)
   end

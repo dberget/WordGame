@@ -20,10 +20,21 @@ defmodule Hangman do
   Contexts are also responsible for managing your data, regardless
   if it comes from the database, an external API or others.
   """
-  def start_game(user) do
-    {:ok, _pid} = DynamicSupervisor.start_child(HangmanSupervisor, {GameServer, user})
+  def start_game(game) do
+    {:ok, _pid} = DynamicSupervisor.start_child(HangmanSupervisor, {GameServer, game})
 
     :ok
+  end
+
+  def running?(game) do
+    case GameServer.game_running?(game) do
+      nil ->
+        start_game(game)
+        {:ok, "started"}
+
+      pid ->
+        {:ok, pid}
+    end
   end
 
   def set_word(word, user) do
