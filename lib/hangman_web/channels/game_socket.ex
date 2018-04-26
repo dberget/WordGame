@@ -1,11 +1,11 @@
-defmodule HangmanWeb.UserSocket do
+defmodule HangmanWeb.GameSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", HangmanWeb.RoomChannel
+  channel("room:*", HangmanWeb.GameChannel)
 
   ## Transports
-  transport :websocket, Phoenix.Transports.WebSocket
+  transport(:websocket, Phoenix.Transports.WebSocket)
   # transport :longpoll, Phoenix.Transports.LongPoll
 
   # Socket params are passed from the client and can

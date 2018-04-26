@@ -4,7 +4,7 @@ defmodule Hangman.Application do
   def start(_type, _args) do
     children = [
       {Registry, keys: :unique, name: :hangman_server},
-      Hangman.GameSupervisor,
+      Hangman.HangmanSupervisor,
       Hangman.Repo,
       HangmanWeb.Endpoint
     ]

@@ -5,13 +5,17 @@ defmodule Hangman.GameServer do
   def start_link(host) do
     GenServer.start_link(
       __MODULE__,
-      %{host: host, word: [], guesses: [], correct_guesses: [], complete: false},
+      %{host: host, word: [], guesses: [], correct_guesses: [], round: 1, complete: false},
       name: via_tuple(host.id)
     )
   end
 
   def new_word(word, host) do
     GenServer.call(via_tuple(host.id), {:new_word, word})
+  end
+
+  def new_round(host) do
+    GenServer.call(via_tuple(host.id), {:new_round})
   end
 
   def correct_guess(letter, host) do
@@ -43,6 +47,19 @@ defmodule Hangman.GameServer do
     new_state = %{state | word: word}
 
     {:reply, {:ok, word}, new_state}
+  end
+
+  def handle_call({:new_round}, _from, state) do
+    new_state = %{
+      host: state.host,
+      word: [],
+      guesses: [],
+      correct_guesses: [],
+      round: state.round + 1,
+      complete: false
+    }
+
+    {:reply, {:ok, "New Round"}, new_state}
   end
 
   def handle_call({:correct_guess, letter}, _from, state) do
