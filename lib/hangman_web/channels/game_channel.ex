@@ -3,6 +3,7 @@ defmodule HangmanWeb.GameChannel do
 
   def join("game: " <> game_slug, _params, socket) do
     socket = assign(socket, :slug, game_slug)
+
     {:ok, socket}
   end
 
@@ -10,6 +11,7 @@ defmodule HangmanWeb.GameChannel do
     slug = socket.assigns[:slug]
     {:ok, msg} = Hangman.handle_guess(params["guess"], slug)
 
-    {:reply, {:ok, %{msg: msg}}, socket}
+    {:reply, :ok, socket}
+    broadcast!(socket, "new_guess", %{content: msg})
   end
 end

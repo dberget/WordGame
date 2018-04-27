@@ -5,7 +5,7 @@ defmodule Hangman.GameServer do
   def start_link(host) do
     GenServer.start_link(
       __MODULE__,
-      %{host: host, word: [], guesses: [], correct_guesses: [], round: 1, complete: false},
+      %{host: host.host, word: [], guesses: [], correct_guesses: [], round: 1, complete: false},
       name: via_tuple(host.slug)
     )
   end

@@ -4,17 +4,14 @@ import { GameConsumer } from "../store"
 class Game extends Component {
   constructor() {
     super()
-
-    this.state = { guess: "" }
   }
 
   render() {
-    let guess
-
     return (
       <GameConsumer>
         {({ game, handleGuess }) => (
           <div>
+            <div> Last Guessed: {game.msg.content} </div>
             <button
               className="border shadow p-1 my-2"
               onClick={() => handleGuess("a")}

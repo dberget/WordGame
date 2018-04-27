@@ -1,28 +1,17 @@
-<h2>Show Game</h2>
-<div id="game"></div>
-
 <%= if @host do %>
-<ul>
-
-  <li>
-    <strong>Game:</strong>
-    <%= @game.slug %>
-    </li>
-    <li>
-    <strong>Host:</strong>
-    <%= @game.host %>
-  </li>
-
-</ul>
-
+  <h4 class="p-2"> YOU ARE THE HOST. </h4>
+    <div class="font-light text-sm p-2 my-2"> 
+      Game: <%= @game.slug %>
+    </div>
 <% else %>
- <li>
-  <strong> Welcome to the Game <strong>
- </li>
-  <li>
-   <strong>Host is:</strong>
-   <%= @game.host %>
-  </li>
-
+  <h4 class="p-2"> YOU ARE <span class="text-red"> NOT </span> THE HOST. </h4>
+   <div class="font-light text-sm p-2 my-2"> 
+    Game: <%= @game.slug %>
+   </div>
+   <div class="font-light text-sm p-2 my-2">
+    Host is: <%= @game.host %>
+   </div>
 <% end %>
 
+
+<div class="m-2" id="game"></div>

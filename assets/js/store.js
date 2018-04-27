@@ -7,26 +7,25 @@ export const GameConsumer = GameContext.Consumer
 class GameProvider extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { slug: "", channel: "", game: {} }
+    this.state = { slug: "", game: { guess: "", msg: "" } }
 
     this.handleGuess = this.handleGuess.bind(this)
   }
 
-  componentDidMount() {
+  componentWillMount() {
     const slug = window.location.pathname.split("/")
     let channel = socket.channel(`game: ${slug[2]}`, {})
-
     this.setState({ channel: channel, slug: slug[2] })
-
     channel.join()
+
+    channel.on("new_guess", msg => this.setState({ game: { msg: msg } }))
   }
 
   handleGuess(letter) {
-    console.log(letter)
     this.state.channel
       .push("new_guess", { guess: letter })
       .receive("ok", resp => {
-        this.setState({ resp: resp })
+        console.log(resp)
       })
   }
 

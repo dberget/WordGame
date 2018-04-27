@@ -3,14 +3,13 @@
   "repository": {},
   "license": "MIT",
   "scripts": {
-    "prestart":
-      "tailwind build ./src/index.tailwind.css -c ./tailwind.js -o ./src/index.css",
-    "prebuild":
-      "tailwind build ./src/index.tailwind.css -c ./tailwind.js -o ./src/index.css",
+    "prestart": "tailwind build ./src/index.tailwind.css -c ./tailwind.js -o ./src/index.css",
+    "prebuild": "tailwind build ./src/index.tailwind.css -c ./tailwind.js -o ./src/index.css",
     "deploy": "brunch build --production",
     "watch": "brunch watch --stdin"
   },
   "dependencies": {
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "phoenix": "file:../deps/phoenix",
