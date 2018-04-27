@@ -30,7 +30,6 @@ defmodule Hangman do
     case GameServer.game_running?(game) do
       nil ->
         start_game(game)
-        {:ok, "started"}
 
       pid ->
         {:ok, pid}

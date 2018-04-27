@@ -21,12 +21,29 @@ class Game extends Component {
 
   handleGuess() {
     this.state.channel
-      .push("new_guess", { guess: "a" })
-      .receive("ok", resp => {})
+      .push("new_guess", { guess: this.state.guess })
+      .receive("ok", resp => {
+        console.log(resp)
+      })
   }
 
   render() {
-    return <button onClick={this.handleGuess}>Game</button>
+    return (
+      <div>
+        <button
+          className="border shadow p-1 my-2"
+          onClick={() => this.handleGuess()}
+        >
+          Submit Guess
+        </button>
+        <input
+          onChange={e => this.setState({ guess: e.target.value })}
+          className="border shadow h-8 ml-1 p-1"
+          type="text"
+          maxLength="1"
+        />
+      </div>
+    )
   }
 }
 
