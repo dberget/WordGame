@@ -1,48 +1,53 @@
 import React, { Component } from "react"
-import socket from "../socket"
+import { GameConsumer } from "../store"
 
 class Game extends Component {
   constructor() {
     super()
 
-    this.state = {}
-
-    this.handleGuess = this.handleGuess.bind(this)
-  }
-
-  componentDidMount() {
-    const slug = window.location.pathname.split("/")
-    let channel = socket.channel(`game: ${slug[2]}`, {})
-
-    this.setState({ channel: channel, slug: slug[2] })
-
-    channel.join()
-  }
-
-  handleGuess() {
-    this.state.channel
-      .push("new_guess", { guess: this.state.guess })
-      .receive("ok", resp => {
-        console.log(resp)
-      })
+    this.state = { guess: "" }
   }
 
   render() {
+    let guess
+
     return (
-      <div>
-        <button
-          className="border shadow p-1 my-2"
-          onClick={() => this.handleGuess()}
-        >
-          Submit Guess
-        </button>
-        <input
-          onChange={e => this.setState({ guess: e.target.value })}
-          className="border shadow h-8 ml-1 p-1"
-          type="text"
-          maxLength="1"
-        />
-      </div>
+      <GameConsumer>
+        {({ game, handleGuess }) => (
+          <div>
+            <button
+              className="border shadow p-1 my-2"
+              onClick={() => handleGuess("a")}
+            >
+              A
+            </button>
+            <button
+              className="border shadow p-1 my-2"
+              onClick={() => handleGuess("w")}
+            >
+              W
+            </button>
+            <button
+              className="border shadow p-1 my-2"
+              onClick={() => handleGuess("o")}
+            >
+              O
+            </button>
+            <button
+              className="border shadow p-1 my-2"
+              onClick={() => handleGuess("r")}
+            >
+              R
+            </button>
+            <button
+              className="border shadow p-1 my-2"
+              onClick={() => handleGuess("d")}
+            >
+              D
+            </button>
+          </div>
+        )}
+      </GameConsumer>
     )
   }
 }

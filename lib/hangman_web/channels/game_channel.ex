@@ -6,10 +6,6 @@ defmodule HangmanWeb.GameChannel do
     {:ok, socket}
   end
 
-  def handle_in("join_game", game_id, socket) do
-    {:noreply, socket}
-  end
-
   def handle_in("new_guess", params, socket) do
     slug = socket.assigns[:slug]
     {:ok, msg} = Hangman.handle_guess(params["guess"], slug)

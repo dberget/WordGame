@@ -26,16 +26,6 @@ defmodule Hangman do
     :ok
   end
 
-  def running?(game) do
-    case GameServer.game_running?(game) do
-      nil ->
-        start_game(game)
-
-      pid ->
-        {:ok, pid}
-    end
-  end
-
   def set_word(word, user) do
     word_as_list = String.split(word, "", trim: true)
 
@@ -55,6 +45,16 @@ defmodule Hangman do
       |> handle_errors
 
     handle_response(game_struct)
+  end
+
+  def is_running_or_start(game) do
+    case GameServer.game_running?(game) do
+      nil ->
+        start_game(game)
+
+      pid ->
+        {:ok, pid}
+    end
   end
 
   defp valid_guess?(%Hangman{guesses: guess_list, guess: guess} = game_struct) do
