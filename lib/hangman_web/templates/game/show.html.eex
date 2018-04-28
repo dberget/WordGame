@@ -1,17 +1,1 @@
-<%= if @host do %>
-  <h4 class="p-2"> YOU ARE THE HOST. </h4>
-    <div class="font-light text-sm p-2 my-2"> 
-      Game: <%= @game.slug %>
-    </div>
-<% else %>
-  <h4 class="p-2"> YOU ARE <span class="text-red"> NOT </span> THE HOST. </h4>
-   <div class="font-light text-sm p-2 my-2"> 
-    Game: <%= @game.slug %>
-   </div>
-   <div class="font-light text-sm p-2 my-2">
-    Host is: <%= @game.host %>
-   </div>
-<% end %>
-
-
 <div class="m-2" id="game"></div>

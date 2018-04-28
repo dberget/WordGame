@@ -48,9 +48,16 @@ defmodule Hangman.GameServer do
   end
 
   def handle_call({:new_word, word}, _from, state) do
-    new_state = %{state | word: word}
+    new_state = %{
+      state
+      | word: word,
+        guesses: [],
+        round: state.round + 1,
+        correct_guesses: [],
+        complete: false
+    }
 
-    {:reply, {:ok, word}, new_state}
+    {:reply, {:ok, new_state}, new_state}
   end
 
   def handle_call({:new_round}, _from, state) do
@@ -63,7 +70,7 @@ defmodule Hangman.GameServer do
       complete: false
     }
 
-    {:reply, {:ok, "New Round"}, new_state}
+    {:reply, {:ok, new_state}, new_state}
   end
 
   def handle_call({:correct_guess, letter}, _from, state) do
@@ -75,19 +82,19 @@ defmodule Hangman.GameServer do
         correct_guesses: correct_guesses
     }
 
-    {:reply, {:correct, letter}, new_state}
+    {:reply, {:ok, new_state}, new_state}
   end
 
   def handle_call({:wrong_guess, letter}, _from, state) do
     new_state = %{state | guesses: [letter | state.guesses]}
 
-    {:reply, {:wrong, letter}, new_state}
+    {:reply, {:wrong, new_state}, new_state}
   end
 
   def handle_call({:complete}, _from, state) do
     new_state = %{state | complete: true}
 
-    {:reply, {:complete, state.word}, new_state}
+    {:reply, {:complete, new_state}, new_state}
   end
 
   def handle_call({:get_state}, _from, state) do

@@ -7,6 +7,7 @@ defmodule Hangman do
     :valid,
     :guess,
     :guesses,
+    :correct_guesses,
     :word,
     :indexes,
     complete: false,
@@ -33,6 +34,7 @@ defmodule Hangman do
   end
 
   def new_round(user), do: {:ok, _msg} = GameServer.new_round(user)
+  def get_state(user), do: GameServer.get_state(user)
 
   def handle_guess(letter, user) do
     {:ok, %{word: word, guesses: guess_list}} = GameServer.get_state(user)
@@ -79,7 +81,7 @@ defmodule Hangman do
   defp check_complete(%Hangman{user: user} = game_struct) do
     {:ok, %{word: word, correct_guesses: guesses}} = GameServer.get_state(user)
 
-    complete? = word == guesses
+    complete? = word == guesses || word -- guesses === []
 
     if complete?, do: GameServer.complete(user)
 
@@ -118,8 +120,11 @@ defmodule Hangman do
   defp handle_errors(%Hangman{errors: nil} = game_struct), do: game_struct
   defp handle_errors(%Hangman{errors: errors}), do: IO.inspect(errors)
 
-  defp handle_response(%Hangman{valid: false, guess: letter}), do: {:ok, "#{letter} not valid"}
-  defp handle_response(%Hangman{complete: true, word: word}), do: {:ok, "Winner! It was #{word}!"}
-  defp handle_response(%Hangman{correct: true, guess: letter}), do: {:ok, "#{letter} is Correct!"}
-  defp handle_response(%Hangman{correct: false, guess: letter}), do: {:ok, "#{letter} is Wrong!"}
+  defp handle_response(%Hangman{valid: false, user: slug}), do: get_state(slug)
+
+  defp handle_response(%Hangman{complete: true, user: slug}), do: get_state(slug)
+
+  defp handle_response(%Hangman{correct: true, user: slug}), do: get_state(slug)
+
+  defp handle_response(%Hangman{correct: false, user: slug}), do: get_state(slug)
 end
