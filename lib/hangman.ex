@@ -86,10 +86,6 @@ defmodule Hangman do
 
     complete? = formatted_word_no_spaces == guesses || formatted_word_no_spaces -- guesses === []
 
-    IO.inspect(formatted_word_no_spaces)
-    IO.inspect(guesses)
-    IO.inspect(complete?)
-
     if complete?, do: GameServer.complete(user)
 
     %Hangman{game_struct | complete: complete?}

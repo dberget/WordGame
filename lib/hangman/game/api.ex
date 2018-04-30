@@ -24,8 +24,6 @@ defmodule Hangman.Api do
   end
 
   def format_response(body) do
-    IO.inspect(body)
-
     %{
       word: body["word"],
       definition: List.first(body["results"])["definition"]
