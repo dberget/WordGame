@@ -7,7 +7,7 @@ defmodule Hangman.GameServer do
       __MODULE__,
       %{
         host: host.host,
-        word: [],
+        word: "",
         guesses: [],
         definition: "",
         correct_guesses: [],
@@ -72,7 +72,7 @@ defmodule Hangman.GameServer do
   def handle_call({:new_round}, _from, state) do
     new_state = %{
       host: state.host,
-      word: [],
+      word: "",
       guesses: [],
       correct_guesses: [],
       round: state.round + 1,

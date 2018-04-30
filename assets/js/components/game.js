@@ -33,7 +33,10 @@ class Game extends Component {
                 <div className="flex justify-center">
                   {alphabet.map(letter => (
                     <Button
-                      disabled={game.guesses.some(g => g == letter)}
+                      disabled={
+                        game.guesses.some(g => g == letter) ||
+                        game.correct_guesses.some(g => g == letter)
+                      }
                       letter={letter}
                       handleClick={handleGuess}
                     />
@@ -41,17 +44,14 @@ class Game extends Component {
                 </div>
               </div>
             ) : (
-              <div className="flex justify-center text-lg font-md my-2 w-full">
+              <div className="flex justify-center text-lg font-md my-2 w-1/2 m-auto">
                 <SelectWord />
               </div>
             )}
             <div className="flex justify-center text-lg font-md my-2 w-full">
               {game.complete ? (
                 <div>
-                  <div className="my-4">
-                    Word was: {game.word.join("").toUpperCase()}
-                  </div>
-
+                  <div className="my-4">Word was: {game.word}</div>
                   <div className="flex-end">
                     <SelectWord />
                   </div>
@@ -61,7 +61,6 @@ class Game extends Component {
             <div className="text-sm mb-4 w-3/5">
               Definition: {game.definition}
             </div>
-            <SelectWord />
           </div>
         )}
       </GameConsumer>

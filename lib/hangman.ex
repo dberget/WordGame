@@ -29,9 +29,8 @@ defmodule Hangman do
 
   def set_word(_word, user) do
     %{word: word, definition: definition} = Api.get_word()
-    word_as_list = String.split(word, "", trim: true)
 
-    {:ok, _word} = GameServer.new_word(word_as_list, definition, user)
+    {:ok, _word} = GameServer.new_word(word, definition, user)
   end
 
   def new_round(user), do: {:ok, _msg} = GameServer.new_round(user)
@@ -82,7 +81,14 @@ defmodule Hangman do
   defp check_complete(%Hangman{user: user} = game_struct) do
     {:ok, %{word: word, correct_guesses: guesses}} = GameServer.get_state(user)
 
-    complete? = word == guesses || word -- guesses === []
+    formatted_word_no_spaces =
+      String.split(word, " ") |> Enum.join() |> String.split("", trim: true)
+
+    complete? = formatted_word_no_spaces == guesses || formatted_word_no_spaces -- guesses === []
+
+    IO.inspect(formatted_word_no_spaces)
+    IO.inspect(guesses)
+    IO.inspect(complete?)
 
     if complete?, do: GameServer.complete(user)
 
@@ -90,7 +96,7 @@ defmodule Hangman do
   end
 
   defp guess_correct?(%Hangman{word: word, guess: guess} = game_struct) do
-    %Hangman{game_struct | correct: Enum.member?(word, guess)}
+    %Hangman{game_struct | correct: Enum.member?(word_to_list(word), guess)}
   end
 
   defp save_guess(%Hangman{valid: false} = game_struct), do: game_struct
@@ -113,9 +119,14 @@ defmodule Hangman do
 
   defp get_indexes(%Hangman{word: word, guess: letter} = game_struct) do
     indexes =
-      Enum.with_index(word) |> Enum.filter(&(elem(&1, 0) == letter)) |> Enum.map(&elem(&1, 1))
+      Enum.with_index(word_to_list(word)) |> Enum.filter(&(elem(&1, 0) == letter))
+      |> Enum.map(&elem(&1, 1))
 
     %Hangman{game_struct | indexes: indexes}
+  end
+
+  defp word_to_list(word) do
+    String.split(word, "", trim: true)
   end
 
   defp handle_errors(%Hangman{errors: nil} = game_struct), do: game_struct
