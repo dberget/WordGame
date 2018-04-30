@@ -39,13 +39,8 @@ class GameProvider extends React.Component {
       .receive("error", msg => this.setState({ error: msg }))
   }
 
-  handleWordSelect(word) {
-    word = word.replace(/\s/g, "")
-
-    this.state.channel
-      .push("new_word", { word: word })
-      .receive("ok", msg => this.setState({ word: word }))
-      .receive("error", msg => this.setState({ error: msg }))
+  handleWordSelect() {
+    this.state.channel.push("new_word")
   }
 
   render() {

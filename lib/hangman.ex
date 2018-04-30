@@ -1,5 +1,5 @@
 defmodule Hangman do
-  alias Hangman.{GameServer, HangmanSupervisor}
+  alias Hangman.{GameServer, HangmanSupervisor, Api}
 
   defstruct [
     :user,
@@ -27,10 +27,11 @@ defmodule Hangman do
     :ok
   end
 
-  def set_word(word, user) do
+  def set_word(_word, user) do
+    %{word: word, definition: definition} = Api.get_word()
     word_as_list = String.split(word, "", trim: true)
 
-    {:ok, _word} = GameServer.new_word(word_as_list, user)
+    {:ok, _word} = GameServer.new_word(word_as_list, definition, user)
   end
 
   def new_round(user), do: {:ok, _msg} = GameServer.new_round(user)
@@ -120,11 +121,5 @@ defmodule Hangman do
   defp handle_errors(%Hangman{errors: nil} = game_struct), do: game_struct
   defp handle_errors(%Hangman{errors: errors}), do: IO.inspect(errors)
 
-  defp handle_response(%Hangman{valid: false, user: slug}), do: get_state(slug)
-
-  defp handle_response(%Hangman{complete: true, user: slug}), do: get_state(slug)
-
-  defp handle_response(%Hangman{correct: true, user: slug}), do: get_state(slug)
-
-  defp handle_response(%Hangman{correct: false, user: slug}), do: get_state(slug)
+  defp handle_response(%Hangman{user: slug}), do: get_state(slug)
 end

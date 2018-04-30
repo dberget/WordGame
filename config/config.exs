@@ -6,16 +6,14 @@
 use Mix.Config
 
 # General application configuration
-config :hangman,
-  ecto_repos: [Hangman.Repo]
+config :hangman, ecto_repos: [Hangman.Repo]
 
 # Configures the endpoint
 config :hangman, HangmanWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "EtlyzZhEbC8El/RSooPxcuFrF3nx9oyy5Nfv4uTFP9zaf8+tQLmWjd8c2H3Y9SVu",
   render_errors: [view: HangmanWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Hangman.PubSub,
-           adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: Hangman.PubSub, adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger
 config :logger, :console,
@@ -24,4 +22,5 @@ config :logger, :console,
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
-import_config "#{Mix.env}.exs"
+import_config "prod.secret.exs"
+import_config "#{Mix.env()}.exs"

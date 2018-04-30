@@ -4,7 +4,11 @@ import SelectWord from "./selectWord"
 import Button from "./button"
 import Guess from "./guess"
 
-const alphabet = "abcdefghijklmnopqrstuvwxyz".split("")
+const alphabet = "abcdefghijklmnopqrstuvwxyz-".split("")
+
+const isDisabled = (guesses, letter) => {
+  return guesses.some(g => g == letter)
+}
 
 class Game extends Component {
   constructor() {
@@ -16,29 +20,23 @@ class Game extends Component {
       <GameConsumer>
         {({ game, handleGuess }) => (
           <div>
-            <div className="flex justify-center text-lg font-md my-2 w-full">
-              {game.complete ? (
-                <div className="">
-                  Winner! Word was: {game.word.join("").toUpperCase()}
-                  <div className="flex-end">
-                    <SelectWord />
-                  </div>
-                </div>
-              ) : null}
-            </div>
             {game.word.length > 0 ? (
-              <div className="flex">
+              <div>
                 <div className="font-light w-full mb-1">
                   Correct Guesses:
                   {game.correct_guesses.map(guess => <Guess guess={guess} />)}
                 </div>
-                <div className="text-sm w-full font-light">
-                  All Guesses:
-                  {game.guesses.map(guess => <Guess guess={guess} />)}
+                <div className="text-sm font-light">
+                  <span> Guess Count: </span>
+                  {game.guesses.length}
                 </div>
-                <div className="flex w-full justify-center">
+                <div className="flex justify-center">
                   {alphabet.map(letter => (
-                    <Button letter={letter} handleClick={handleGuess} />
+                    <Button
+                      disabled={game.guesses.some(g => g == letter)}
+                      letter={letter}
+                      handleClick={handleGuess}
+                    />
                   ))}
                 </div>
               </div>
@@ -47,6 +45,23 @@ class Game extends Component {
                 <SelectWord />
               </div>
             )}
+            <div className="flex justify-center text-lg font-md my-2 w-full">
+              {game.complete ? (
+                <div>
+                  <div className="my-4">
+                    Word was: {game.word.join("").toUpperCase()}
+                  </div>
+
+                  <div className="flex-end">
+                    <SelectWord />
+                  </div>
+                </div>
+              ) : null}
+            </div>
+            <div className="text-sm mb-4 w-3/5">
+              Definition: {game.definition}
+            </div>
+            <SelectWord />
           </div>
         )}
       </GameConsumer>

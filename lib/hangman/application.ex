@@ -6,7 +6,8 @@ defmodule Hangman.Application do
       {Registry, keys: :unique, name: :hangman_server},
       Hangman.HangmanSupervisor,
       Hangman.Repo,
-      HangmanWeb.Endpoint
+      HangmanWeb.Endpoint,
+      Hangman.Presence
     ]
 
     opts = [strategy: :one_for_one, name: Hangman.Supervisor]

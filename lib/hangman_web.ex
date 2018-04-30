@@ -28,8 +28,9 @@ defmodule HangmanWeb do
 
   def view do
     quote do
-      use Phoenix.View, root: "lib/hangman_web/templates",
-                        namespace: HangmanWeb
+      use Phoenix.View,
+        root: "lib/hangman_web/templates",
+        namespace: HangmanWeb
 
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_flash: 2, view_module: 1]
@@ -48,6 +49,7 @@ defmodule HangmanWeb do
       use Phoenix.Router
       import Plug.Conn
       import Phoenix.Controller
+      import HangmanWeb.Plugs.UserToken
     end
   end
 

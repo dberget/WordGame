@@ -13,6 +13,9 @@
     render: 3,
     render: 4,
     redirect: 2,
+    get: 3,
+    resources: 2,
+    pipe_through: 1,
 
     # Ecto Schema
     field: 2,
