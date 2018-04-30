@@ -115,7 +115,7 @@ defmodule Hangman do
 
   defp get_indexes(%Hangman{word: word, guess: letter} = game_struct) do
     indexes =
-      Enum.with_index(word_to_list(word)) |> Enum.filter(&(elem(&1, 0) == letter))
+      word |> word_to_list |> Enum.with_index() |> Enum.filter(&(elem(&1, 0) == letter))
       |> Enum.map(&elem(&1, 1))
 
     %Hangman{game_struct | indexes: indexes}
