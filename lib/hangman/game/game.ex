@@ -14,7 +14,7 @@ defmodule Hangman.Game do
 
   def creation_changeset(game, attrs) do
     game
-    |> put_slug()
+    |> change(slug: random_slug())
     |> cast(attrs, [:host, :slug, :word, :winner, :complete])
     |> unique_constraint(:slug)
     |> validate_required([:host, :slug])
@@ -22,11 +22,7 @@ defmodule Hangman.Game do
 
   def changeset(game, attrs) do
     game
-    |> cast(attrs, [:host, :slug, :word, :winner, :complete])
-  end
-
-  def put_slug(struct) do
-    change(struct, slug: random_slug())
+    |> cast(attrs, [:host, :word, :winner, :complete])
   end
 
   def random_slug() do

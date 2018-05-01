@@ -15,11 +15,7 @@ defmodule Hangman do
   ]
 
   @moduledoc """
-  Hangman keeps the contexts that define your domain
-  and business logic.
-
-  Contexts are also responsible for managing your data, regardless
-  if it comes from the database, an external API or others.
+  Main game context.
   """
   def start_game(game) do
     {:ok, _pid} = DynamicSupervisor.start_child(HangmanSupervisor, {GameServer, game})
@@ -39,14 +35,12 @@ defmodule Hangman do
   def handle_guess(letter, user) do
     {:ok, %{word: word, guesses: guess_list}} = GameServer.get_state(user)
 
-    game_struct =
-      %Hangman{user: user, guess: letter, guesses: guess_list, word: word}
-      |> valid_guess?
-      |> handle_save_guess
-      |> check_complete
-      |> handle_errors
-
-    handle_response(game_struct)
+    %Hangman{user: user, guess: letter, guesses: guess_list, word: word}
+    |> valid_guess?
+    |> handle_save_guess
+    |> check_complete
+    |> handle_errors
+    |> handle_response
   end
 
   def is_running_or_start(game) do
