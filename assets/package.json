@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "babel-brunch": "6.1.1",
-    "brunch": "2.10.9",
+    "brunch": "^2.10.12",
     "clean-css-brunch": "2.10.0",
     "postcss-brunch": "^2.1.0",
     "tailwindcss": "^0.5.2",
